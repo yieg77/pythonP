@@ -24,7 +24,3 @@ for i in range(1,6):
         print('오답')
 
 print(str(cnt_o)+'개 맞음')
-
-
-
-
