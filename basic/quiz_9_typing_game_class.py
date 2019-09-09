@@ -1,5 +1,5 @@
 import pickle
-import quiz_9_functionM as fm
+import quiz_9_class as cm
 
 prompt = """
 1. 문제 바꾸기 (영어)
