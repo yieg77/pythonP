@@ -1,9 +1,34 @@
-import random, time, pickle
+import random, time, pickle, os
 
 class TypingGame:
+    word_list=[]
+    rand={}
+
     def __init__(self):
         self.word_list = ['start', 'python', 'artificial', 'bigdata', 'computer']
         self.rank = {}  
+        if os.path.exists("./basic/quiz_9_typing_game_record.pkl"):
+            with open ("./basic/quiz_9_typing_game_record.pkl", 'rb') as f:
+                self.rank = pickle.load(f)
+
+    # 메뉴 보여주기
+    def showMenu(self):
+        print("""
+    1. 문제 바꾸기 (영어)
+    2. 문제 바꾸기 (한글)
+    3. 문제 추가하기
+    4. 파일로 문제 저장하기
+    5. 피클로 문제 저장하기
+    6. 피클에서 문제 읽어오기
+    7. 타자게임
+    8. 등수 리스트
+    0. 종료
+
+    Enter number: """, end = '')
+
+    # 문제 보여주기
+    def showList(self):
+        print("\n\n문제", self.word_list)
 
     # 1, 2 문제 바꾸기
     def get_list(self, gubn):
@@ -14,18 +39,18 @@ class TypingGame:
 
         new_list = f.read()
         new_list = new_list.split('\n')
-        #print('new_list', new_list)
+        #print('1 new_list', new_list)
 
         random_nums = random.sample(range(0,len(new_list)), 7)
-        #print('ramdom_nums', random_nums)
+        #print('2 ramdom_nums', random_nums)
 
-        new_quiz = []
+        self.word_list = []
         for i in random_nums:
-            new_quiz.append(new_list[i])
+            self.word_list.append(new_list[i])
 
         f.close()
-    
-        return new_quiz
+
+        #print('3', self.word_list)
 
     #3. 문제 추가하기
     def add_word(self):
@@ -50,11 +75,11 @@ class TypingGame:
 
     #6. 피클에서 문제 읽어오기
     def getPickle(self):
-        with open ("./basic/quiz_9_typing_game_pickle.pkl", 'rb') as f:
-            data = pickle.load(f)
-
-        #print(data)
-        return data
+        if not os.path.exists("./basic/quiz_9_typing_game_pickle.pkl"):
+            print("피클 문제 파일이 없습니다.")
+        else:
+            with open("./basic/quiz_9_typing_game_pickle.pkl", 'rb') as f:
+                self.word_list = pickle.load(f)
 
     # 7. 게임하기
     def game(self):
@@ -93,10 +118,8 @@ class TypingGame:
         with open ("./basic/quiz_9_typing_game_record.pkl", 'wb') as f:
             pickle.dump(self.rank, f)
 
-        return ranklist
-
     #8. 등수 리스트
-    def showList(self):
+    def showRecord(self):
         #print(rank)
         ranklist = sorted(self.rank.items(), key=(lambda x: x[1]))
 
