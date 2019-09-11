@@ -98,11 +98,40 @@ def big_books():
 
     conn.close()
 
+def update_books():
+    conn=connect_db()
+    c=conn.cursor()
+    #sql="update books set recommend = ? where title=?"
+    sql="update books set recommend=:1 where title=:2"
+    c.execute(sql,(200,'Java'))
+    conn.commit()
+    conn.close()
+
+def delete_books():
+    conn=connect_db()
+    c=conn.cursor()
+    sql="delete from books where publisher=:1"
+    c.execute(sql,('한빛',))
+    conn.commit()
+    conn.close()
+
 #===main===
+#테이블 생성
 create_table()
+
+#데이터 추가
 insert_books()
 
-#all_books()
+#데이터 검색
+all_books()
 #some_books(3)
 #one_book()
-big_books()
+#big_books()
+
+#데이터 수정
+update_books()
+all_books()
+
+#데이터 삭제
+delete_books()
+all_books()
