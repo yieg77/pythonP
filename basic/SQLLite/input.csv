@@ -1,0 +1,4 @@
+supplier_name,invoice_number,part_number,cost,purchase_date
+aaaa,10,20,2000,2019-02-02
+bbbb,20,20,50000,2019-03-05
+cccc,50,30,100,2019-06-19

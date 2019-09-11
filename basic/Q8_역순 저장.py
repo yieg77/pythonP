@@ -1,3 +1,4 @@
-with open('abc.txt', 'r') as f:
+with open('./basic/abc.txt', 'r') as f:
     data = f.read()
 
+print(type(data))
