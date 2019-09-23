@@ -1,0 +1,60 @@
+{% extends "default.html" %}
+{% block title %}{{book.title}}{% endblock %}
+
+{% block body %}
+    <h1 align="center">{{book.title}} 정보</h1>
+    <br>
+    <div class="container">
+        <form action="/update" method="POST">
+            <div class="form-group row">
+                <label for="bookName" class="col-sm-2 col-form-label">책 제목</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="title" name="title" value="{{book.title}}" placeholder="책 제목">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="bookDate" class="col-sm-2 col-form-label">출간일</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="bookDate" name="bookDate" value="{{book.published_date}}" placeholder="출간일">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="publisher" class="col-sm-2 col-form-label">출판사</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="publisher" name="publisher" value="{{book.publisher}}" placeholder="출판사">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="pages" class="col-sm-2 col-form-label">총 페이지수</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="pages" name="pages" value="{{book.pages}}" placeholder="총 페이지수">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="recomm" class="col-sm-2 col-form-label">추천수</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="recomm" name="recomm" value="{{book.recommend}}" placeholder="추천수">
+                </div>
+            </div>
+            <div class ="form-group row">
+              <button type="submit" class = "btn btn-primary">수정</button>
+            </div>
+            <div class ="form-group row">
+              <div>
+                <a href="/delete/{{book.title}}">
+                <button type="button" class = "btn btn-primary">삭제</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+{% endblock %}
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

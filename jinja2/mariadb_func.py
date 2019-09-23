@@ -29,6 +29,8 @@ def insert_record(new_data):
     conn=conn_db()
     c=conn.cursor()
 
+    create_table()
+
     sql="INSERT INTO books VALUES (%s,%s,%s,%s,%s)"
     c.execute(sql, new_data)
     conn.commit()
@@ -36,52 +38,36 @@ def insert_record(new_data):
 
 
 #데이터 수정하기
-def update_book():
-    book=input('수정을 원하는 책의 제목을 입력하세요: ')
-
+def update_book(title, published_date, publisher, pages, recommend):
     conn=conn_db()
     c=conn.cursor()
 
-    sql="SELECT * FROM books WHERE title LIKE '%%%s%%'"%book
-    #sql="SELECT * FROM books WHERE title = '%s'"%book
-    c.execute(sql)
-    rows=(c.fetchall())
-    for row in rows:
-        print(row)
+    sql="""UPDATE books
+              SET title=%s,
+                  published_date=%s,
+                  publisher=%s,
+                  pages=%s,
+                  recommend=%s
+            WHERE title = %s"""
+    print(sql)
 
-    try:
-        new_recomm=int(input('수정할 추천수를 입력하세요(취소는 0) :'))
-    except ValueError:
-        new_recomm=0
+    c.execute(sql, (title,published_date, publisher, pages, recommend, title))
 
-    if new_recomm:
-        #c.execute("UPDATE books SET recommend=300 WHERE title = 'Java'")
-        sql="UPDATE books SET recommend=%s WHERE title = %s"
-        c.execute(sql, (new_recomm,book,))
-        conn.commit()
+    print(sql)
+
+    conn.commit()
 
     conn.close()
 
 
 #데이터 삭제하기
-def delete_book():
-    book=input('삭제를 원하는 책의 제목을 입력하세요: ')
-
+def delete_book(title):
     conn=conn_db()
     c=conn.cursor()
 
-    sql="SELECT * FROM books WHERE title = '%s'"%book
-    c.execute(sql)
-    rows=(c.fetchall())
-    for row in rows:
-        print(row)
-
-    ok=input('이 데이터를 삭제하시겠습니까? (Y/N) : ')
-
-    if ok == 'Y' :
-        sql="DELETE FROM books WHERE title=%s"
-        c.execute(sql, (book,))
-        conn.commit()
+    sql="DELETE FROM books WHERE title=%s"
+    c.execute(sql, (title,))
+    conn.commit()
 
     conn.close()
 
@@ -123,7 +109,8 @@ def show_Book(srchKey):
     conn=conn_db()
     c=conn.cursor()
 
-    sql="SELECT * FROM books WHERE title like %%%s%%"
+    sql="SELECT * FROM books WHERE title = %s"
+    print(sql)
 
     c.execute(sql, srchKey)
 

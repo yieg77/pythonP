@@ -1,48 +1,17 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import os, pymysql
-
-#DB연결
-def conn_db():
-    conn = pymysql.connect(host='localhost',user='root',password='qwer1234',db='test',
-    charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor) #딕셔너리 형태로 데이터 출력
-
-    return conn
-
-#Table생성
-def create_table():
-    conn=conn_db()
-    c=conn.cursor()
-
-    sql="""CREATE TABLE if not exists books(
-        title text,
-        published_date text,
-        publisher text,
-        pages integer,
-        recommend integer)"""
-
-    c.execute(sql)
-    conn.commit()
-    conn.close()
-
-
-#데이터 입력하기
-def insert_record(new_data):
-    create_table()
-
-    conn=conn_db()
-    c=conn.cursor()
-
-    sql="INSERT INTO books VALUES (%s,%s,%s,%s,%s)"
-    c.execute(sql, new_data)
-    conn.commit()
-    conn.close()
+import mariadb_func as db
 
 #전체 데이터 조회
-def show_all_books():
-    conn=conn_db()
+def show_all_books(srchKey):
+    conn=db.conn_db()
     c=conn.cursor()
 
-    sql="SELECT * FROM books"
+    sql="SELECT * FROM books "
+    if srchKey != "":
+        sql += "WHERE title like '%%%s%%' or publisher like '%%%s%%'"%(srchKey,srchKey)
+
+    print(sql)
 
     c.execute(sql)
 
@@ -77,18 +46,48 @@ def insertBook():
 
     new_data=[bookName, bookDate, publisher, pages, recomm]
 
-    print(new_data)
-    insert_record(new_data)
-    result=show_all_books()
+    #print(new_data)
+    db.insert_record(new_data)
+    #books=show_all_books()
 
-    print(result)
+    #print(books)
 
-    return render_template("show_Books.html", result=result)
+    #return render_template("book_list.html", books=books)
+    #return redirect('/bookList')
+    return redirect(url_for('showBooks')) #함수이름
 
-@app.route('/showBooks')
+@app.route('/bookList', methods=['GET','POST'])
 def showBooks():
-    result=show_all_books()
-    return render_template("show_Books.html", result=result)
+    if request.method=='POST':
+        srchKey=request.form['srchKey']
+        print("srchKey", srchKey)
+        books=show_all_books(srchKey)
+    else:
+        books=show_all_books("")
+
+    return render_template("book_list.html", books=books)
+
+@app.route('/content/<title>')
+def showContent(title):
+    #print("title",title)
+    book = db.show_Book(title)
+    return render_template('content.html',book=book)
+
+@app.route('/update', methods=["POST"])
+def updateContent():
+    title=request.form['title']
+    bookDate=request.form['bookDate']
+    publisher=request.form['publisher']
+    pages=request.form['pages']
+    recommend=request.form['recomm']
+
+    db.update_book(title, bookDate, publisher, pages, recommend)
+    return redirect(url_for('showBooks')) #함수이름
+
+@app.route('/delete/<title>')
+def deleteContent(title):
+    db.delete_book(title)
+    return redirect(url_for('showBooks')) #함수이름
 
 
 if __name__ == '__main__':
