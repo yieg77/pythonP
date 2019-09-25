@@ -27,6 +27,7 @@ print(soup.title.name)
 print()
 print(soup.title.string)
 print()
+"""
 print(soup.title.parent.name)
 print()
 print(soup.p)
@@ -44,6 +45,7 @@ for link in soup.find_all('a'):
     print(link.get('href'))
 
 print(soup.get_text())
+"""
 
 
 
