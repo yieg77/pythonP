@@ -1,8 +1,6 @@
 import urllib.request, pymysql
 from bs4 import BeautifulSoup
 
-
-
 #DB연결
 def conn_db():
     conn = pymysql.connect(host='localhost',user='root',password='qwer1234',db='test',
@@ -137,7 +135,6 @@ def show_Book(srchKey):
 
 
 create_table()
-
 
 url="https://news.naver.com"
 response=urllib.request.urlopen(url)

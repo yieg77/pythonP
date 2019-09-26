@@ -3,14 +3,39 @@ from selenium import webdriver
 import time
 #import requests #urllib와 비슷
 
-driver=webdriver.Chrome('./selenium/chromedriver')
-driver.get("https://www.istarbucks.co.kr/index.do")
-time.sleep(10)
+driver=webdriver.Chrome('./selenium/chromedriver.exe')
+#driver.get("https://www.istarbucks.co.kr/store/store_map.do")
+#driver.get("https://www.istarbucks.co.kr/store/store_map.do")
+driver.get("https://www.google.com/maps")
+time.sleep(4)
 
-menu=driver.find_element_by_class_name('ally')
-menu.click()
-time.sleep(10)
+inputElement = driver.find_element_by_id('searchboxinput')
+inputElement.send_keys("카카오\n")
+#inputElement2 = driver.find_element_by_id('searchbox-searchbutton')
+#inputElement2.click()
+time.sleep(4)
+
+#addr=driver.find_element_by_class_name('section-result-location')
+#print(addr.text)
+
+pages=driver.page_source
+bs=BeautifulSoup(pages, "html.parser")
+#print(bs)
+
+title=bs.select("h3.section-result-title span")
+results=bs.select("span.section-result-location")
+
+type(results)
+
+for i in range(len(results)):
+    print(title[i].string, " : ", results[i].string)
+
+
 """
+menu=driver.find_element_by_id('quickSearchText')
+menu.click()
+time.sleep(4)
+
 loca=driver.find_element_by_class_name('loca_search')
 loca.click()
 time.sleep(10)
