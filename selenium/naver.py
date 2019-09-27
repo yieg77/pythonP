@@ -6,8 +6,8 @@ driver=webdriver.Chrome('./selenium/chromedriver.exe')
 driver.get('https://nid.naver.com/nidlogin.login')
 driver.implicitly_wait(3)
 
-id='yieg77'
-pw='apdpfhd9675'
+id=''
+pw=''
 
 
 
@@ -38,8 +38,8 @@ time.sleep(0.5)
 
 driver.find_element_by_xpath('//*[@id="frmNIDLogin"]/fieldset/input').click()
 time.sleep(1)
-driver.find_element_by_xpath('//*[@id="frmNIDLogin"]/fieldset/span[1]/a').click()
-time.sleep(1)
+#driver.find_element_by_xpath('//*[@id="frmNIDLogin"]/fieldset/span[1]/a').click()
+#time.sleep(3)
 
 #driver.find_element_by_xpath('//*[@id="login_maintain"]/span[1]').click()
 #time.sleep(1)
@@ -50,14 +50,16 @@ time.sleep(1)
 driver.get('https://order.pay.naver.com/home')
 html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
-notices = soup.select('div.p_inr > div.p_info > a > span')
-#notices = soup.select('dl.my_npoint')
+#notices = soup.select('div.member_sc > dl.my_npoint dd > strong')
+#print("notices\n", notices)
 
-
-print("notices\n", notices)
-
-point = soup.select_one('.my_npoint strong')
+#point = soup.select_one('.my_npoint strong')
 #print(point.string)
+
+results=soup.select("ul.goods_group_list > li >div.goods_item img")
+for result in results:
+    print(result.attrs['alt'])
+
 time.sleep(15)
 
-driver.close()
+#driver.close()

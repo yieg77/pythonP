@@ -23,7 +23,6 @@ def create_table():
     conn.commit()
     conn.close()
 
-
 #데이터 입력하기
 def insert_record(new_data):
     conn=conn_db()
