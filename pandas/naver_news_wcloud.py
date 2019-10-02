@@ -3,6 +3,12 @@
 import os, sys, json, pymysql, datetime
 import urllib.request
 from bs4 import BeautifulSoup
+import numpy as np
+import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from soynlp.noun import NewsNounExtractor
+from PIL import Image
 
 client_id = "lJYukXCk5Do4WahIXYrm"
 client_secret = "h0i136cKQB"
@@ -36,6 +42,7 @@ c.execute(sql)
 encText = urllib.parse.quote("제주")
 #print(encText)
 
+results=''
 for i in range (1, 30, 10):
     url = "https://openapi.naver.com/v1/search/news.json?display=10&start="+str(i)+"&sort=sim&query=" + encText # json 결과
     # url = "https://openapi.naver.com/v1/search/blog.xml?query=" + encText # xml 결과
@@ -50,6 +57,55 @@ for i in range (1, 30, 10):
         response_body = response.read()
         #print(response_body.decode('utf-8'))
         results=response_body.decode('utf-8')
+
+        a=json.loads(results)
+        items=a['items']
+        #print('items', type(items), items)
+        contents=''#item_list=[]
+        for i in range(len(items)):
+            d=BeautifulSoup(items[i]['description'], 'html.parser')
+            contents+=d.get_text()
+    else:
+        print("Error Code:" + rescode)
+
+
+
+
+print(contents)
+
+
+
+def displayWordCloud(data=None, backgroundcolor='white', width=800, height=600):
+    #이미지 형태대로 wordcloud 출력
+    img = Image.open('./pandas/apple.png')
+    img_array=np.array(img)
+
+    #soynlp로 명사만 빼내기
+    noun_extractor = NewsNounExtractor()
+    nouns=noun_extractor.train_extract([results])
+    print(type(nouns))
+
+    wordcloud = WordCloud(
+        font_path = '/Library/Fonts/HMKMAMI.TTF',
+        #font_path = 'C:/Windows/Fonts/HMKMAMI.TTF',
+        #stopwords = stopwords_kr,
+        background_color=backgroundcolor,
+        mask=img_array,
+        width=width,
+        height=height).generate(' '.join(nouns))
+
+    print(wordcloud.words_)
+    plt.figure(figsize=(15,10))
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.show()
+   
+    wordcloud.to_file('./pandas/result.png')
+
+#displayWordCloud(response_body)
+
+
+'''
         a=json.loads(results)
         items=a['items']
         #print('items', type(items), items)
@@ -71,7 +127,7 @@ for i in range (1, 30, 10):
         c.executemany(sql, item_list)
     else:
         print("Error Code:" + rescode)
-
+'''
 #conn.commit()
 conn.close()
 

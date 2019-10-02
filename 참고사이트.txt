@@ -1,0 +1,15 @@
+Jump to Python
+
+SQLite : http://www.sqliteexpert.com/download.html
+
+jinja2 : https://jinja.palletsprojects.com/en/2.10.x/
+
+Bootstrap : https://getbootstrap.com/
+
+BeautifulSoup : https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+
+numpy : https://numpy.org/devdocs/user/quickstart.html
+
+<Pandas>
+pandas.pydata.org
+https://datascienceschool.net/view-notebook/7002e92653434bc88c8c026c3449d27b/
