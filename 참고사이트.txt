@@ -14,3 +14,9 @@ numpy : https://numpy.org/devdocs/user/quickstart.html
 pandas.pydata.org
 https://datascienceschool.net/view-notebook/7002e92653434bc88c8c026c3449d27b/
 kobis.or.kr
+
+<Folium>
+위도 경도, 카카오 api로 받아올 수 있음.
+
+
+<데이터>
